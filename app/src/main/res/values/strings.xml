@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">IKEA_RGB</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="ble_not_supported">Bluetooth Low Energie is not supported by your device</string>
+    <string name="title_activity_scan_ble">ScanBLE</string>
+    <string name="searching">searching</string>
+    <string name="nconnect">Not connected!</string>
+    <string name="connect">Connected: </string>
+
+    <string-array name="programs">
+        <item>Off</item>
+        <item>Rainbow</item>
+        <item>Tick</item>
+        <item>Random</item>
+    </string-array>
+
+</resources>
