@@ -9,6 +9,8 @@
     <string name="searching">searching</string>
     <string name="nconnect">Not connected!</string>
     <string name="connect">Connected: </string>
+    <string name="Send">Send</string>
+    <string name="brightness">brightness</string>
 
     <string-array name="programs">
         <item>Off</item>
