@@ -38,12 +38,14 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
 
     byte[] plain;
     private Button btn;
+    private Button scanbtn;
     private TextView txt;
     private TextView txtBrightness;
     private Spinner spinner;
     private SeekBar brightnessSeek;
 
-    private String bleName, bleDevId;
+    private String bleName;
+    private String bleDevId;
 
     private Context appcontext;
     private Ble ble;
@@ -65,9 +67,13 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
         }
 
 
-        btn = (Button) findViewById(R.id.buttonScan);
+        btn = (Button) findViewById(R.id.buttonSend);
         btn.setOnClickListener( this );
         btn.setClickable( false );
+
+        scanbtn = (Button) findViewById(R.id.buttonScan);
+        scanbtn.setOnClickListener(this);
+        scanbtn.setClickable(false);
 
         txt = (TextView) findViewById(R.id.textView);
         txtBrightness = (TextView) findViewById(R.id.textView2);
@@ -186,11 +192,9 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
         byte[] rand = new byte[3];
         for( int i = 0; i<10; i++ ){
             sr.nextBytes(rand);
-            for( int n = 0; n<3; n++ ){
-                alist.add( rand[0] );
-                alist.add( rand[1] );
-                alist.add( rand[2] );
-            }
+            alist.add(rand[0]);
+            alist.add(rand[1]);
+            alist.add(rand[2]);
         }
 
         return finishFrame(alist);
@@ -252,17 +256,28 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
 
     @Override
     public void onClick(View v) {
-        Log.i("it.kratzer.ikea_rgb", "klick ");
+        switch (v.getId()) {
+            case R.id.buttonScan:
+                Log.i("it.kratzer.ikea_rgb", "klick SCAN");
+                Log.i(TAG, "Scanning for devices...");
+                ble.scan();
+                break;
+            case R.id.buttonSend:
+                Log.i("it.kratzer.ikea_rgb", "klick SEND");
 
-        if( spinner.getSelectedItem().toString().contentEquals( "Off" ) ){
-            sendFrame(offFrame((byte) this.brightness));
-        }else if( spinner.getSelectedItem().toString().contentEquals( "Rainbow" ) ){
-            sendFrame(rainbowFrame((byte) this.brightness));
-        }else if( spinner.getSelectedItem().toString().contentEquals( "Tick" ) ){
-            sendFrame(tickFrame((byte) this.brightness));
-        }else if( spinner.getSelectedItem().toString().contentEquals( "Random" ) ){
-            sendFrame(buildRandomFrame((byte) this.brightness));
+                if (spinner.getSelectedItem().toString().contentEquals("Off")) {
+                    sendFrame(offFrame((byte) this.brightness));
+                } else if (spinner.getSelectedItem().toString().contentEquals("Rainbow")) {
+                    sendFrame(rainbowFrame((byte) this.brightness));
+                } else if (spinner.getSelectedItem().toString().contentEquals("Tick")) {
+                    sendFrame(tickFrame((byte) this.brightness));
+                } else if (spinner.getSelectedItem().toString().contentEquals("Random")) {
+                    sendFrame(buildRandomFrame((byte) this.brightness));
+                }
+
+                break;
         }
+
     }
 
     private void sendFrame( byte[] frame ){
@@ -273,7 +288,7 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
             return;
         }
         btn.setClickable( false );
-        int SNIPPED = 10;
+        int SNIPPED = 16;
         byte[] sendbuf;
         for( int n = 0; n < frame.length; ){
             if( frame.length-n < SNIPPED ){
@@ -331,6 +346,7 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                scanbtn.setClickable(false);
                 btn.setClickable( true );
                 txt.setText( getString( R.string.connect )+bleName );
             }
@@ -340,11 +356,12 @@ public class IkeaRGB extends Activity implements View.OnClickListener, BleConnec
     @Override
     public void disconnected(String name, String devId) {
         Log.i( TAG, "BLE disconnected: "+name );
-        bleName = name;
-        bleDevId = devId;
+        this.bleName = name;
+        this.bleDevId = devId;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                scanbtn.setClickable(true);
                 btn.setClickable(false);
                 txt.setText( getString(R.string.nconnect) );
             }

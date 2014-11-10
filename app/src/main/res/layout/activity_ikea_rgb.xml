@@ -25,7 +25,28 @@
             android:text="@string/brightness"
             android:id="@+id/textView2"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="12dp" />
+            android:layout_marginRight="12dp"
+            android:layout_column="2" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Scan"
+            android:id="@+id/buttonScan"
+            android:layout_column="0"
+            android:layout_span="3" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
     </TableRow>
 
     <TableRow
@@ -36,10 +57,11 @@
             android:id="@+id/seekBar"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:contentDescription="@string/brightness"
-            android:layout_span="2"
-            android:progress="255" />
+            android:layout_span="3"
+            android:progress="255"
+            android:layout_marginTop="20dp" />
     </TableRow>
 
     <TableRow
@@ -58,11 +80,11 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/buttonScan"
+                android:layout_toStartOf="@+id/buttonSend"
                 android:spinnerMode="dropdown" />
 
             <Button
-                android:id="@+id/buttonScan"
+                android:id="@+id/buttonSend"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
